@@ -1,0 +1,15 @@
+1) Tally up EMS calls with COVID symptoms per ZIP code
+   - symptoms may include respiratory issues, fever, and headache
+
+2) Do the same for drugs
+
+3) Normalize the histograms per capita (divide by population size) 
+
+4) Combine the COVID and drug histos
+
+5) Plot
+   - x-axis = 2019 drug calls per capita
+   - y-axis = COVID calls per capita
+   - each point on the graph represents a ZIP code in New York
+   - color by income
+

@@ -1,0 +1,65 @@
+Summary
+
+
+Hypothesis: 
+
+Did ZIP codes with lower socioeconomic status have higher COVID rates? More specifically, did lower income New York ZIP codes with high rates of drug related EMS calls from 2019 (a baseline year prior to the COVID pandemic) correlate with high rates of COVID symptom related EMS calls in peak months from 2020-2022? I am using high rates of drug related calls with low income as a proxy for low socioeconomic status.
+
+I hypothesize that the mid range for socioeconomic status (medium levels of drug rates and income) will correlate with a similar mid range of COVID rates.
+
+I hypothesize that since high income ZIP codes may not be prone to calling ambulances (for privacy reasons or otherwise), there may not be a correlation between high income and low call rates. However, the correlation between drug rates and COVID call rates for specific ZIP codes should still be strong, as evidenced by a linearly shaped plot.
+
+Additionally, I hypothesize that the correlations may become clearer in later COVID peaks, i.e. the plots may converge to a more linear shape on the final peak.
+
+
+Data sources:
+
+/data/raw/NYC_EMS_Incidents/EMS_Incident_Dispatch_Data_20241110.tsv.gz
+City of New York. "EMS Incident Dispatch Data." Public Safety, NYC Open Data, 2024, https://data.cityofnewyork.us/Public-Safety/EMS-Incident-Dispatch-Data/76xm-jjuj. Accessed on November 10, 2024.
+- EMS Incident Dispatch Data file for NY area including date, time, and ZIP code.
+
+/data/raw/census/2010-2020-populations/2020.gz
+U.S. Census Bureau. "TOTAL POPULATION." Decennial Census, DEC Demographic and Housing Characteristics, Table P1, 2020, https://data.census.gov/table/DECENNIALDHC2020.P1?q=All 5-digit ZIP Code Tabulation Areas within United States Populations and People. Accessed on November 26, 2024.
+- Population per U.S. ZIP code (to normalize the call tallies per capita)
+
+/data/raw/census/medianIncomeByZIP/medianIncomeByZIP2022.txt
+U.S. Census Bureau. "Median Income in the Past 12 Months (in 2022 Inflation-Adjusted Dollars)." American Community Survey, ACS 5-Year Estimates Subject Tables, Table S1903, 2022, https://data.census.gov/table/ACSST5Y2022.S1903?q=Income by Zip code tabulation area. Accessed on December 3, 2024.
+- Median income per U.S. ZIP code (to color the plots)
+- Meta data from /data/raw/census/medianIncomeByZIP/ACSST5Y2022.S1903-Column-Metadata.csv
+
+Centers for Disease Control and Prevention. "Symptoms of COVID-19." CDC COVID-19 Public Health Guidance, 2024,  https://www.cdc.gov/covid/signs-symptoms/index.html. Accessed on December 31, 2024.
+- Source for COVID symptoms and emergency warning signs.
+
+Centers for Disease Control and Prevention. "COVID-19 Death Rates." CDC COVID Data Tracker, Surveillance and Data Analytics, 2024, https://covid.cdc.gov/covid-data-tracker/#trends_weeklydeaths_7dayeddiagnosed_36. Accessed on December 3, 2024.
+- Source for peak COVID months in New York
+
+
+Methodology:
+
+First, I clean up all my datasets to isolate just the data that I need so that I don’t have to work with huge datasets in the following steps.
+From the EMS dataset, I extract calls from years 2019-2022, and I output data YYYY/MM/DD|ZIP|INITIAL_CALL_TYPE|FINAL_CALL_TYPE (because these are the only years and columns that I need, and because it is easier to sanity check that I get all the right dates when it is in this format.)
+From the Census population dataset I extract just the ZIP code and population (which is all that I need from this dataset.)
+From the Census median income dataset I extract just the ZIP code and median income (which is all that I need from this dataset.)
+
+Next, I tally up EMS calls with COVID symptoms such as respiratory issues, fever, and headache per ZIP code for each of three COVID peaks: March 2020 - May 2020, November 2020 - May 2021, Nov 2021 - Feb 2022. I obtained these dates by analyzing the plot at https://covid.cdc.gov/covid-data-tracker/#trends_weeklydeaths_7dayeddiagnosed_36  
+I do the same for drug related EMS calls from 2019.
+
+Next, to normalize the data per capita I use the clean Census population dataset and divide tallies by population size. 
+
+Then, I combine the drug histogram with each of the three COVID peak histograms. I include income per ZIP from the clean Census income dataset in these combined histograms because in the next step, the plotting, it will be used to map color.
+
+Finally, I plot the combined histograms. 
+My x-axis represents 2019 drug related calls per capita, and my y-axis represents COVID related calls from a specific peak, with each point on the plot representing a ZIP code in New York.
+Color on the plot is mapped to income, with low income a light yellow, medium income an orange, and high income a red/purple. 
+I also generate isolated plots for low, medium, and high income for easy comparison.
+
+
+Conclusions:
+
+My plots for all three peaks are linear, and converge to an even more linear plot on the final peak, just as I hypothesized. This shows that there is a strong correlation between drug rates in 2019 and COVID rates in each of the given peaks.
+
+Additionally, lower income ZIP codes were all clustered toward the top of the points, which confirms my hypothesis that low socioeconomic status, i.e. low income and high drug rates, correlate to high COVID rates.
+
+Medium income ZIP codes were closer to the middle, which also shows the correlation between socioeconomic status and COVID rates.
+
+Lastly, as I hypothesized high income ZIP codes did not all correlate to low drug rates, and they did show a linear trendline proving a correlation between drug rates and COVID rates. 
